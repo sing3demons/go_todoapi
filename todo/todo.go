@@ -12,7 +12,7 @@ type Todo struct {
 	Title string `json:"text"`
 }
 
-func (Todo) Tablename() string {
+func (Todo) TableName() string {
 	return "todos"
 }
 

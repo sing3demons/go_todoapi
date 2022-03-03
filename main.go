@@ -2,18 +2,10 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sing3demons/todo/todo"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
-
-type User struct {
-	gorm.Model
-	Name string
-}
-
-type UserHandler struct {
-	db *gorm.DB
-}
 
 func main() {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -21,19 +13,16 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&User{})
-
-	db.Create(&User{Name: "sing"})
-
-	userHandler := UserHandler{db: db}
+	db.AutoMigrate(&todo.Todo{})
 
 	r := gin.Default()
-	r.GET("/users",userHandler.User)
-	r.Run(":8080")
-}
+	r.GET("/ping", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 
-func (h *UserHandler) User(ctx *gin.Context) {
-	var u User
-	h.db.First(&u)
-	ctx.JSON(200, u)
+	handler := todo.NewTodoHandler(db)
+	r.POST("/todos", handler.NewTask)
+	r.Run(":8080")
 }
