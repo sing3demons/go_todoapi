@@ -11,6 +11,10 @@ type User struct {
 	Name string
 }
 
+type UserHandler struct {
+	db *gorm.DB
+}
+
 func main() {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
@@ -21,11 +25,15 @@ func main() {
 
 	db.Create(&User{Name: "sing"})
 
+	userHandler := UserHandler{db: db}
+
 	r := gin.Default()
-	r.GET("/users", func(ctx *gin.Context) {
-		var u User
-		db.First(&u)
-		ctx.JSON(200, u)
-	})
+	r.GET("/users",userHandler.User)
 	r.Run(":8080")
+}
+
+func (h *UserHandler) User(ctx *gin.Context) {
+	var u User
+	h.db.First(&u)
+	ctx.JSON(200, u)
 }
