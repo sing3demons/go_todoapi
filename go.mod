@@ -2,9 +2,12 @@ module github.com/sing3demons/todo
 
 go 1.17
 
+require github.com/gin-gonic/gin v1.7.7
+
 require (
-	github.com/gin-gonic/gin v1.7.7
-	github.com/gorilla/mux v1.8.0
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
+	github.com/mattn/go-sqlite3 v1.14.9 // indirect
 )
 
 require (
@@ -22,4 +25,6 @@ require (
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/sys v0.0.0-20200116001909-b77594299b42 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
+	gorm.io/driver/sqlite v1.3.1
+	gorm.io/gorm v1.23.2
 )
