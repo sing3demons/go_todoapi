@@ -1,26 +1,17 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
-
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-
-	r := mux.NewRouter()
-	r.HandleFunc("/ping", pingpongHandler).Methods("GET")
-	http.ListenAndServe(":8080", r)
+	r := gin.Default()
+	r.GET("ping", pingpongHandler)
+	r.Run(":8080")
 }
 
-func pingpongHandler(w http.ResponseWriter, r *http.Request) {
-	resp := struct {
-		Message string `json:"message"`
-	}{
-		Message: "pong",
-	}
-
-	json.NewEncoder(w).Encode(&resp)
-
+func pingpongHandler(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "pong",
+	})
 }
