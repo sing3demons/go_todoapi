@@ -2,13 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	http.HandleFunc("/ping", pingpongHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	r := mux.NewRouter()
+	r.HandleFunc("/ping", pingpongHandler).Methods("GET")
+	http.ListenAndServe(":8080", r)
 }
 
 func pingpongHandler(w http.ResponseWriter, r *http.Request) {
