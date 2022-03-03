@@ -31,6 +31,12 @@ var (
 )
 
 func main() {
+	_, err := os.Create("/tmp/live")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer os.Remove("/tmp/live")
+	
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -43,6 +49,10 @@ func main() {
 		ctx.JSON(200, gin.H{
 			"message": "hello world",
 		})
+	})
+
+	r.GET("/healthz", func(ctx *gin.Context) {
+		ctx.Status(200)
 	})
 
 	r.GET("x", func(ctx *gin.Context) {
