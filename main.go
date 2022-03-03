@@ -80,6 +80,7 @@ func main() {
 	handler := todo.NewTodoHandler(db)
 	protect.POST("/todos", handler.NewTask)
 	protect.GET("/todos", handler.List)
+	protect.DELETE("/todos/:id", handler.Remove)
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
