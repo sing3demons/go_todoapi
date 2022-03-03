@@ -9,7 +9,7 @@ import (
 
 type Todo struct {
 	gorm.Model
-	Title string `json:"text"`
+	Title string `json:"text" binding:"required"`
 }
 
 func (Todo) TableName() string {
