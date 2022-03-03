@@ -14,7 +14,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/sing3demons/todo/auth"
 	"github.com/sing3demons/todo/todo"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -36,8 +36,8 @@ func main() {
 		log.Fatal(err)
 	}
 	defer os.Remove("/tmp/live")
-	
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+
+	db, err := gorm.Open(mysql.Open(os.Getenv("DB_CONN")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
